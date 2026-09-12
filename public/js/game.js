@@ -42,12 +42,26 @@ const inputContainer = document.getElementById('input-container');
 // Load questions from JSON
 async function loadQuestions() {
     try {
-        const response = await fetch('data/trivia_questions.json');
-        questions = await response.json();
+        // Use absolute path to ensure it works whether opened via file:// or http://
+        const basePath = window.location.protocol === 'file:' ? '' : '';
+        const response = await fetch(basePath + '/data/trivia_questions.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        questions = data.questions || [];
+        
+        if (questions.length === 0) {
+            throw new Error('No questions found in database');
+        }
+        
+        console.log(`Loaded ${questions.length} questions successfully`);
         initializeFilters();
     } catch (error) {
         console.error('Error loading questions:', error);
-        alert('Failed to load questions. Please refresh the page.');
+        alert('Failed to load questions. Please ensure you are running this from a web server or check the console for details.');
     }
 }
 
