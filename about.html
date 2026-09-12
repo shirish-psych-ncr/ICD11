@@ -1,140 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | MindGrace Trivia</title>
-  <meta name="description" content="Learn about MindGrace Trivia - an educational tool created by Shirish from the Mind Grace Neuropsychiatric team.">
-  <meta name="author" content="Shirish - Mind Grace Neuropsychiatric Team">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="public/css/styles.css">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <style>
-    .about-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-    .about-section { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
-    .about-section h2 { color: var(--accent-cyan); margin-bottom: 1rem; font-size: 1.5rem; }
-    .about-section p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; }
-    .team-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: var(--surface-raised); border-radius: 12px; margin: 1rem 0; }
-    .team-badge-icon { font-size: 1.5rem; }
-    .feature-list { list-style: none; padding: 0; }
-    .feature-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 0.75rem; }
-    .feature-list li:last-child { border-bottom: none; }
-    .feature-icon { color: var(--accent-cyan); font-size: 1.25rem; }
-    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-color); text-decoration: none; font-weight: 600; margin-bottom: 1.5rem; }
-    .back-link:hover { text-decoration: underline; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | MindGrace Trivia</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .about-content { max-width: 800px; margin: 0 auto; }
+        .about-section { background: var(--bg-secondary); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--bg-tertiary); }
+        .about-section h2 { color: var(--accent-cyan); margin-bottom: 1rem; }
+        .team-badge { display: inline-block; padding: 0.5rem 1.5rem; background: var(--bg-tertiary); border-radius: 50px; margin: 1rem 0; border: 1px solid var(--accent-cyan); }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <a href="index.html" class="logo">
-        <div class="logo-icon">MG</div>
-        <div class="logo-text">Mind<span>Grace</span> Trivia</div>
-      </a>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main">
-    <div class="about-content">
-      <a href="index.html" class="back-link">← Back to Game</a>
-      
-      <div class="about-section">
-        <h2>About MindGrace Trivia</h2>
-        <p>MindGrace Trivia is an interactive educational platform designed to help mental health professionals, students, and enthusiasts deepen their understanding of psychiatric diagnoses through gamified learning.</p>
-        
-        <div class="team-badge">
-          <span class="team-badge-icon">🧠</span>
-          <div>
-            <strong style="color: var(--text-primary);">Created by Shirish</strong>
-            <div style="font-size: 0.875rem; color: var(--text-muted);">Mind Grace Neuropsychiatric Team</div>
-          </div>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">🧠</span>
+            <span class="brand-text">MindGrace Trivia</span>
         </div>
-        
-        <p>Our mission is to make learning about mental health classification systems engaging, accessible, and effective. By combining the DSM-5-TR and ICD-11 frameworks into a single interactive experience, we bridge the gap between theoretical knowledge and practical application.</p>
-      </div>
-
-      <div class="about-section">
-        <h2>What Makes This Different</h2>
-        <ul class="feature-list">
-          <li>
-            <span class="feature-icon">📚</span>
-            <div>
-              <strong style="color: var(--text-primary);">Dual Classification System</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem;">Every question displays both DSM-5-TR and ICD-11 codes for comprehensive learning.</p>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="about-content">
+            <div class="about-section">
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">About MindGrace Trivia</h1>
+                <div class="team-badge">Created by <strong>Shirish</strong> | Mind Grace Neuropsychiatric Team</div>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-top: 1.5rem;">
+                    MindGrace Trivia is an educational platform designed to help students and professionals master psychiatric diagnostic coding using both DSM-5-TR and ICD-11 classification systems.
+                </p>
             </div>
-          </li>
-          <li>
-            <span class="feature-icon">🎯</span>
-            <div>
-              <strong style="color: var(--text-primary);">Category Filtering</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem;">Focus on specific diagnostic categories that matter most to your studies.</p>
+            <div class="about-section">
+                <h2>🎯 Our Mission</h2>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    To provide free, high-quality educational resources for learning psychiatric diagnostics without paywalls or barriers. We believe knowledge should be accessible to all learners.
+                </p>
             </div>
-          </li>
-          <li>
-            <span class="feature-icon">💡</span>
-            <div>
-              <strong style="color: var(--text-primary);">Instant Feedback</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem;">Learn from every answer with detailed explanations and code references.</p>
+            <div class="about-section">
+                <h2>✨ Key Features</h2>
+                <ul style="color: var(--text-secondary); line-height: 2; margin-left: 1.5rem;">
+                    <li>Dual classification system training (DSM-5-TR & ICD-11)</li>
+                    <li>Clinical vignettes with realistic patient scenarios</li>
+                    <li>Immediate feedback with detailed explanations</li>
+                    <li>Clinical pearls for enhanced learning</li>
+                    <li>Progress tracking and session reports</li>
+                    <li>Completely free - no subscriptions or paywalls</li>
+                </ul>
             </div>
-          </li>
-          <li>
-            <span class="feature-icon">🔓</span>
-            <div>
-              <strong style="color: var(--text-primary);">Completely Free</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem;">No paywalls, no subscriptions. Educational resource for everyone.</p>
+            <div class="about-section">
+                <h2>⚠️ Disclaimer</h2>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    This platform is for educational purposes only. It is not intended for clinical decision-making or diagnosis. Always consult official diagnostic manuals and qualified healthcare professionals for clinical work.
+                </p>
             </div>
-          </li>
-          <li>
-            <span class="feature-icon">📱</span>
-            <div>
-              <strong style="color: var(--text-primary);">Works Everywhere</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem;">Pure HTML/CSS/JS - runs on any device with a modern browser.</p>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 MindGrace Trivia. Created by Shirish from the Mind Grace Neuropsychiatric Team.</p>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Use</a>
             </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="about-section">
-        <h2>Educational Purpose</h2>
-        <p>This tool is designed for educational purposes only. It is not intended to be used as a clinical or diagnostic tool. Always refer to official DSM-5-TR and ICD-11 documentation published by the American Psychiatric Association and World Health Organization respectively for clinical decision-making.</p>
-        <p>The questions and content are regularly updated to reflect the latest revisions in both classification systems.</p>
-      </div>
-
-      <div class="about-section">
-        <h2>Contact & Contributions</h2>
-        <p>We welcome feedback, suggestions for new questions, and corrections. If you're an educator or mental health professional interested in contributing to this resource, please reach out.</p>
-        <p style="margin-top: 1rem;"><strong style="color: var(--accent-cyan);">Mind Grace Neuropsychiatric Team</strong><br><span style="color: var(--text-muted); font-size: 0.875rem;">Dedicated to advancing mental health education through innovative tools.</span></p>
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-brand">Mind Grace Neuropsychiatric</div>
-      <div class="footer-credit">Created by Shirish • Educational Resource for Mental Health Professionals</div>
-      <div class="footer-links">
-        <a href="about.html" class="footer-link">About</a>
-        <a href="contact.html" class="footer-link">Contact</a>
-        <a href="privacy.html" class="footer-link">Privacy</a>
-        <a href="terms.html" class="footer-link">Terms</a>
-      </div>
-      <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
-        Disclaimer: This trivia game is for educational purposes only. It is not a clinical or diagnostic tool. 
-        Always refer to official DSM-5-TR and ICD-11 documentation for clinical decision-making.
-      </p>
-    </div>
-  </footer>
+        </div>
+    </footer>
 </body>
 </html>

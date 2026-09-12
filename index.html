@@ -1,175 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MindGrace Trivia | DSM-5-TR & ICD-11 Diagnostic Challenge</title>
-  <meta name="description" content="Test your knowledge of mental health diagnoses with our interactive DSM-5-TR and ICD-11 trivia game. Created by Shirish from the Mind Grace Neuropsychiatric team.">
-  <meta name="author" content="Shirish - Mind Grace Neuropsychiatric Team">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="MindGrace Trivia | DSM-5-TR & ICD-11 Diagnostic Challenge">
-  <meta property="og:description" content="Interactive learning game for mental health professionals and students. Master DSM-5-TR and ICD-11 classifications.">
-  <meta property="og:type" content="website">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="public/css/styles.css">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindGrace Trivia | DSM-5-TR & ICD-11 Diagnostic Challenge</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <a href="index.html" class="logo">
-        <div class="logo-icon">MG</div>
-        <div class="logo-text">Mind<span>Grace</span> Trivia</div>
-      </a>
-      <nav class="nav-links">
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main">
-    <!-- Hero Section -->
-    <section class="hero">
-      <h1>DSM-5-TR & ICD-11 Diagnostic Challenge</h1>
-      <p>Test your clinical knowledge with interactive trivia questions covering both classification systems</p>
-    </section>
-
-    <!-- Persistent Stats Display -->
-    <div id="persistent-stats" class="persistent-stats"></div>
-
-    <!-- Start Screen -->
-    <div id="start-screen" class="game-card">
-      <div style="text-align: center; padding: 2rem 0;">
-        <h2 style="font-size: 1.75rem; margin-bottom: 1rem; color: var(--accent-cyan);">Ready to Test Your Knowledge?</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.8;">
-          Answer multiple-choice questions about mental health disorders, their diagnostic criteria, 
-          and classification codes from both DSM-5-TR and ICD-11. Get instant feedback and learn as you play!
-        </p>
-        
-        <!-- Filters -->
-        <div class="filter-group" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
-          <div>
-            <label class="filter-label">Category</label>
-            <select id="category-filter" class="filter-select">
-              <option value="all">All Categories</option>
-              <option value="Depressive Disorders">Depressive Disorders</option>
-              <option value="Anxiety Disorders">Anxiety Disorders</option>
-              <option value="Personality Disorders">Personality Disorders</option>
-              <option value="Trauma-Related Disorders">Trauma-Related Disorders</option>
-              <option value="Bipolar Disorders">Bipolar Disorders</option>
-              <option value="Neurodevelopmental Disorders">Neurodevelopmental Disorders</option>
-              <option value="Schizophrenia Spectrum">Schizophrenia Spectrum</option>
-              <option value="Feeding and Eating Disorders">Feeding & Eating Disorders</option>
-              <option value="Substance Use Disorders">Substance Use Disorders</option>
-              <option value="Sleep-Wake Disorders">Sleep-Wake Disorders</option>
-            </select>
-          </div>
-          <div>
-            <label class="filter-label">Difficulty</label>
-            <select id="difficulty-filter" class="filter-select">
-              <option value="all">All Levels</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">🧠</span>
+            <span class="brand-text">MindGrace Trivia</span>
         </div>
-        
-        <!-- Game Mode Selection -->
-        <div style="background: var(--surface-raised); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-          <h3 style="font-size: 1.125rem; margin-bottom: 1rem; color: var(--text-primary);">Select Game Mode</h3>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <label class="mode-toggle">
-              <input type="checkbox" id="timed-mode">
-              <span>⏱ Timed Mode (30s/question)</span>
-            </label>
-            <label class="mode-toggle">
-              <input type="checkbox" id="learn-mode">
-              <span>📖 Learn Mode (No scoring)</span>
-            </label>
-          </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
         </div>
-        
-        <button id="start-btn" class="btn btn-primary" style="font-size: 1.125rem; padding: 1rem 2.5rem;">
-          🎮 Start Game
-        </button>
-      </div>
-    </div>
+    </nav>
 
-    <!-- Game Screen -->
-    <div id="game-screen" class="game-card hidden">
-      <div class="game-header">
-        <div class="question-counter">Question <span id="current-q">1</span>/<span id="total-q">20</span></div>
-        <div id="timer-display" class="timer-badge">⏱ 30s</div>
-        <div id="streak-display" class="streak-badge">🔥 0</div>
-      </div>
-      
-      <div class="question-container">
-        <span id="difficulty-badge" class="difficulty-badge easy">EASY</span>
-        <h2 id="question-text" class="question-text"></h2>
-      </div>
-      
-      <div id="options-container" class="options-container"></div>
-      
-      <button id="hint-btn" class="btn btn-hint" style="display: none;">💡 Use Hint (-5 pts)</button>
-      
-      <div id="feedback-box" class="feedback-box hidden"></div>
-      
-      <button id="next-btn" class="btn btn-primary hidden">Next Question →</button>
-      
-      <div id="score-display" class="score-display">Score: 0</div>
-    </div>
-
-    <!-- End Screen -->
-    <div id="end-screen" class="game-card hidden">
-      <div style="text-align: center;">
-        <h2 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Session Complete!</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Great effort! Here's how you did:</p>
-        
-        <div style="font-size: 4rem; font-weight: 800; color: var(--primary-color); margin-bottom: 2rem;" id="final-score">0</div>
-        
-        <div id="final-stats" class="final-stats"></div>
-        
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-          <button id="restart-btn" class="btn btn-primary">🔄 Play Again</button>
-          <button id="export-btn" class="btn btn-secondary">📊 Export Report</button>
-          <button id="home-btn" class="btn btn-outline">🏠 Home</button>
+    <!-- Persistent Stats Bar -->
+    <div class="persistent-stats">
+        <div class="stat-item">
+            <span class="stat-label">Total Questions</span>
+            <span class="stat-value" id="stat-total">0</span>
         </div>
-      </div>
+        <div class="stat-item">
+            <span class="stat-label">High Score</span>
+            <span class="stat-value" id="stat-highscore">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Best Streak</span>
+            <span class="stat-value" id="stat-streak">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Accuracy</span>
+            <span class="stat-value" id="stat-accuracy">0%</span>
+        </div>
     </div>
-  </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-brand">Mind Grace Neuropsychiatric</div>
-      <div class="footer-credit">Created by Shirish • Educational Resource for Mental Health Professionals</div>
-      <div class="footer-links">
-        <a href="about.html" class="footer-link">About</a>
-        <a href="contact.html" class="footer-link">Contact</a>
-        <a href="privacy.html" class="footer-link">Privacy</a>
-        <a href="terms.html" class="footer-link">Terms</a>
-      </div>
-      <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
-        Disclaimer: This trivia game is for educational purposes only. It is not a clinical or diagnostic tool. 
-        Always refer to official DSM-5-TR and ICD-11 documentation for clinical decision-making.
-      </p>
-    </div>
-  </footer>
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Start Screen -->
+        <section id="start-screen" class="screen active">
+            <div class="hero-section">
+                <h1 class="hero-title">Master Psychiatric Diagnostics</h1>
+                <p class="hero-subtitle">Test your knowledge of DSM-5-TR and ICD-11 codes with clinical vignettes and direct questions</p>
+                <div class="branding-badge">
+                    Created by <strong>Shirish</strong> | Mind Grace Neuropsychiatric Team
+                </div>
+            </div>
 
-  <!-- Game Script -->
-  <script src="public/js/game.js"></script>
+            <div class="game-setup">
+                <div class="setup-card">
+                    <h2>Configure Your Session</h2>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label" for="category-filter">Category</label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label" for="difficulty-filter">Difficulty</label>
+                        <select id="difficulty-filter" class="filter-select">
+                            <option value="all">All Difficulties</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div class="mode-toggles">
+                        <div class="mode-toggle">
+                            <input type="checkbox" id="timed-mode">
+                            <label for="timed-mode">
+                                <span class="toggle-icon">⏱</span>
+                                <span class="toggle-text">Timed Mode (30s/question)</span>
+                            </label>
+                        </div>
+                        <div class="mode-toggle">
+                            <input type="checkbox" id="learn-mode">
+                            <label for="learn-mode">
+                                <span class="toggle-icon">📖</span>
+                                <span class="toggle-text">Learn Mode (No scoring)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="start-game-btn" class="btn-primary btn-large">
+                        Start Challenge
+                    </button>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Dual Classification</h3>
+                    <p>Master both DSM-5-TR and ICD-11 coding systems simultaneously</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📚</span>
+                    <h3>Clinical Vignettes</h3>
+                    <p>Real-world patient scenarios to test diagnostic reasoning</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💡</span>
+                    <h3>Instant Feedback</h3>
+                    <p>Detailed explanations and clinical pearls after every question</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔓</span>
+                    <h3>No Paywalls</h3>
+                    <p>Completely free educational resource for all learners</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <div class="question-counter" id="question-counter">Question 1 of 20</div>
+                <div class="timer-display" id="timer-display"></div>
+                <div class="streak-display" id="streak-display">🔥 Streak: 0</div>
+                <div class="score-display" id="score-display">Score: 0</div>
+            </div>
+
+            <div class="question-area">
+                <div id="question-prompt" class="question-prompt"></div>
+                
+                <div id="vignette-container" class="vignette-container" style="display: none;"></div>
+                
+                <div id="options-container" class="options-container" style="display: none;"></div>
+                
+                <div id="input-container" class="input-container">
+                    <input 
+                        type="text" 
+                        id="text-input" 
+                        class="text-input" 
+                        placeholder="Enter code (e.g., 6A71.1 or 300.01)"
+                        autocomplete="off"
+                    >
+                    <button id="hint-btn" class="btn-hint">💡 Hint (-5 pts)</button>
+                </div>
+            </div>
+
+            <div class="action-area">
+                <button id="submit-btn" class="btn-primary btn-large">Submit Answer</button>
+            </div>
+
+            <div id="feedback-container" class="feedback-container"></div>
+        </section>
+
+        <!-- End Screen -->
+        <section id="end-screen" class="screen hidden">
+            <div class="results-card">
+                <h2>Session Complete!</h2>
+                
+                <div class="final-score-display">
+                    <div class="score-circle">
+                        <span class="score-number" id="final-score">0 / 400</span>
+                    </div>
+                    <p class="accuracy-display" id="accuracy-display">0% Accuracy</p>
+                </div>
+
+                <p class="motivational-text" id="motivational-text"></p>
+
+                <div id="session-stats" class="session-stats"></div>
+
+                <div class="action-buttons">
+                    <button id="export-report-btn" class="btn-secondary">
+                        📊 Export Report
+                    </button>
+                    <button id="restart-btn" class="btn-primary btn-large">
+                        Play Again
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 MindGrace Trivia. Created by Shirish from the Mind Grace Neuropsychiatric Team.</p>
+            <p class="disclaimer">For educational purposes only. Not for clinical decision-making.</p>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Use</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="public/js/game.js"></script>
 </body>
 </html>

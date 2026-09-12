@@ -1,400 +1,531 @@
 /**
- * MindGrace Trivia - Game Engine v3.0
- * Features: Persistence, Hints, Streaks, Analytics, Export
- * Created by Shirish | Mind Grace Neuropsychiatric Team
+ * MindGrace Trivia - Clinical Diagnostic Challenge
+ * DSM-5-TR & ICD-11 Educational Platform
+ * Created by Shirish, Mind Grace Neuropsychiatric Team
  */
 
-// --- State Management ---
-const GameState = {
-    questions: [],
-    currentQuestionIndex: 0,
-    score: 0,
-    streak: 0,
-    maxStreak: 0,
-    answeredCount: 0,
-    correctCount: 0,
-    timer: null,
-    timeLeft: 30,
-    isTimedMode: false,
-    isLearnMode: false,
-    hintsUsed: 0,
-    sessionHistory: [], // Stores {question, userAnswer, correct, timeTaken}
-    
-    // Load persistent data
-    loadProgress() {
-        const saved = localStorage.getItem('mindgrace_progress');
-        return saved ? JSON.parse(saved) : { totalQuestions: 0, totalCorrect: 0, highScore: 0, bestStreak: 0 };
-    },
-    
-    // Save persistent data
-    saveProgress(currentScore) {
-        const progress = this.loadProgress();
-        progress.totalQuestions += this.answeredCount;
-        progress.totalCorrect += this.correctCount;
-        progress.highScore = Math.max(progress.highScore, currentScore);
-        progress.bestStreak = Math.max(progress.bestStreak, this.maxStreak);
-        localStorage.setItem('mindgrace_progress', JSON.stringify(progress));
-    }
-};
+// Game State
+let questions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let streak = 0;
+let maxStreak = 0;
+let correctAnswers = 0;
+let sessionHistory = [];
+let timer = null;
+let timeRemaining = 30;
+let hintsUsed = 0;
+let isLearnMode = false;
+let isTimedMode = true;
 
-// --- DOM Elements ---
-const elements = {
-    startScreen: document.getElementById('start-screen'),
-    gameScreen: document.getElementById('game-screen'),
-    endScreen: document.getElementById('end-screen'),
-    categoryFilter: document.getElementById('category-filter'),
-    difficultyFilter: document.getElementById('difficulty-filter'),
-    timedToggle: document.getElementById('timed-mode'),
-    learnToggle: document.getElementById('learn-mode'),
-    startBtn: document.getElementById('start-btn'),
-    questionText: document.getElementById('question-text'),
-    difficultyBadge: document.getElementById('difficulty-badge'),
-    optionsContainer: document.getElementById('options-container'),
-    feedbackBox: document.getElementById('feedback-box'),
-    nextBtn: document.getElementById('next-btn'),
-    scoreDisplay: document.getElementById('score-display'),
-    timerDisplay: document.getElementById('timer-display'),
-    streakDisplay: document.getElementById('streak-display'),
-    finalScore: document.getElementById('final-score'),
-    finalStats: document.getElementById('final-stats'),
-    restartBtn: document.getElementById('restart-btn'),
-    homeBtn: document.getElementById('home-btn'),
-    exportBtn: document.getElementById('export-btn'),
-    hintBtn: document.getElementById('hint-btn')
-};
+// DOM Elements
+const startScreen = document.getElementById('start-screen');
+const gameScreen = document.getElementById('game-screen');
+const endScreen = document.getElementById('end-screen');
+const questionPrompt = document.getElementById('question-prompt');
+const textInput = document.getElementById('text-input');
+const submitBtn = document.getElementById('submit-btn');
+const hintBtn = document.getElementById('hint-btn');
+const feedbackContainer = document.getElementById('feedback-container');
+const scoreDisplay = document.getElementById('score-display');
+const streakDisplay = document.getElementById('streak-display');
+const counterDisplay = document.getElementById('question-counter');
+const timerDisplay = document.getElementById('timer-display');
+const categoryFilter = document.getElementById('category-filter');
+const difficultyFilter = document.getElementById('difficulty-filter');
+const timedModeToggle = document.getElementById('timed-mode');
+const learnModeToggle = document.getElementById('learn-mode');
+const optionsContainer = document.getElementById('options-container');
+const vignetteContainer = document.getElementById('vignette-container');
+const inputContainer = document.getElementById('input-container');
 
-// --- Initialization ---
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadQuestions();
-    setupEventListeners();
-    updatePersistentStats();
-});
-
+// Load questions from JSON
 async function loadQuestions() {
     try {
         const response = await fetch('data/trivia_questions.json');
-        const data = await response.json();
-        GameState.questions = data;
-        console.log(`MindGrace: Loaded ${GameState.questions.length} questions.`);
+        questions = await response.json();
+        initializeFilters();
     } catch (error) {
         console.error('Error loading questions:', error);
-        alert('Failed to load question database. Please ensure trivia_questions.json exists.');
+        alert('Failed to load questions. Please refresh the page.');
     }
 }
 
-function setupEventListeners() {
-    elements.startBtn.addEventListener('click', startGame);
-    elements.nextBtn.addEventListener('click', nextQuestion);
-    elements.restartBtn.addEventListener('click', startGame);
-    elements.homeBtn.addEventListener('click', () => location.reload());
-    elements.exportBtn.addEventListener('click', exportSessionReport);
+// Initialize filter dropdowns
+function initializeFilters() {
+    const categories = [...new Set(questions.map(q => q.category))];
+    const difficulties = ['easy', 'medium', 'hard'];
     
-    if(elements.hintBtn) {
-        elements.hintBtn.addEventListener('click', useHint);
-    }
-}
-
-function updatePersistentStats() {
-    const progress = GameState.loadProgress();
-    const statsElement = document.getElementById('persistent-stats');
-    if (statsElement) {
-        statsElement.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-label">All-Time High Score</span>
-                <span class="stat-value">${progress.highScore}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Total Questions Answered</span>
-                <span class="stat-value">${progress.totalQuestions}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Best Streak</span>
-                <span class="stat-value">${progress.bestStreak} 🔥</span>
-            </div>
-        `;
-    }
-}
-
-// --- Game Logic ---
-
-function startGame() {
-    GameState.currentQuestionIndex = 0;
-    GameState.score = 0;
-    GameState.streak = 0;
-    GameState.maxStreak = 0;
-    GameState.answeredCount = 0;
-    GameState.correctCount = 0;
-    GameState.hintsUsed = 0;
-    GameState.sessionHistory = [];
-    GameState.isTimedMode = elements.timedToggle.checked;
-    GameState.isLearnMode = elements.learnToggle.checked;
-
-    const category = elements.categoryFilter.value;
-    const difficulty = elements.difficultyFilter.value;
-    
-    let filtered = GameState.questions.filter(q => {
-        const catMatch = category === 'all' || q.category === category;
-        const diffMatch = difficulty === 'all' || q.difficulty === difficulty;
-        return catMatch && diffMatch;
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+    categories.forEach(cat => {
+        categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
     });
+    
+    difficultyFilter.innerHTML = '<option value="all">All Difficulties</option>';
+    difficulties.forEach(diff => {
+        difficultyFilter.innerHTML += `<option value="${diff}">${diff.charAt(0).toUpperCase() + diff.slice(1)}</option>`;
+    });
+}
 
-    GameState.questions = shuffleArray(filtered);
+// Get filtered questions
+function getFilteredQuestions() {
+    let filtered = [...questions];
+    
+    const category = categoryFilter.value;
+    if (category !== 'all') {
+        filtered = filtered.filter(q => q.category === category);
+    }
+    
+    const difficulty = difficultyFilter.value;
+    if (difficulty !== 'all') {
+        filtered = filtered.filter(q => q.difficulty === difficulty);
+    }
+    
+    return filtered;
+}
 
-    if (GameState.questions.length === 0) {
-        alert('No questions found for this selection. Please adjust filters.');
+// Shuffle array (Fisher-Yates)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Start game
+function startGame() {
+    isLearnMode = learnModeToggle.checked;
+    isTimedMode = timedModeToggle.checked;
+    
+    const filtered = getFilteredQuestions();
+    if (filtered.length === 0) {
+        alert('No questions match your filters. Please adjust filters and try again.');
         return;
     }
-
-    elements.startScreen.classList.add('hidden');
-    elements.endScreen.classList.add('hidden');
-    elements.gameScreen.classList.remove('hidden');
     
-    if(elements.hintBtn) {
-        elements.hintBtn.style.display = GameState.isLearnMode ? 'none' : 'block';
-        elements.hintBtn.disabled = false;
-        elements.hintBtn.textContent = '💡 Use Hint (-5 pts)';
-    }
-
-    loadQuestion();
+    questions = shuffleArray([...filtered]);
+    currentQuestionIndex = 0;
+    score = 0;
+    streak = 0;
+    maxStreak = 0;
+    correctAnswers = 0;
+    sessionHistory = [];
+    hintsUsed = 0;
+    
+    startScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
+    endScreen.style.display = 'none';
+    
+    updateScore();
+    showQuestion();
 }
 
-function loadQuestion() {
-    clearInterval(GameState.timer);
-    const q = GameState.questions[GameState.currentQuestionIndex];
+// Show current question
+function showQuestion() {
+    const question = questions[currentQuestionIndex];
+    counterDisplay.textContent = `Question ${currentQuestionIndex + 1}/${questions.length}`;
     
-    elements.questionText.textContent = q.question;
-    elements.difficultyBadge.textContent = q.difficulty.toUpperCase();
-    elements.difficultyBadge.className = `difficulty-badge ${q.difficulty}`;
+    // Build question display based on type
+    let questionHTML = `
+        <div class="difficulty-badge ${question.difficulty}">${question.difficulty}</div>
+        <span class="category-badge">${question.category}</span>
+    `;
     
-    elements.feedbackBox.classList.add('hidden');
-    elements.feedbackBox.className = 'feedback-box hidden';
-    
-    elements.optionsContainer.innerHTML = '';
-    const options = shuffleArray([...q.options]);
-    
-    options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.textContent = opt;
-        btn.onclick = () => handleAnswer(opt, q);
-        elements.optionsContainer.appendChild(btn);
-    });
-
-    if (GameState.isTimedMode && !GameState.isLearnMode) {
-        GameState.timeLeft = 30;
-        elements.timerDisplay.textContent = `⏱ ${GameState.timeLeft}s`;
-        elements.timerDisplay.style.color = '#fff';
+    // Handle vignette questions
+    if (question.type === 'vignette' && question.vignette) {
+        vignetteContainer.style.display = 'block';
+        inputContainer.style.display = 'none';
+        optionsContainer.style.display = 'grid';
         
-        GameState.timer = setInterval(() => {
-            GameState.timeLeft--;
-            elements.timerDisplay.textContent = `⏱ ${GameState.timeLeft}s`;
-            
-            if (GameState.timeLeft <= 10) {
-                elements.timerDisplay.style.color = '#ff4757';
-            }
-            
-            if (GameState.timeLeft <= 0) {
-                handleTimeout(q);
-            }
-        }, 1000);
+        // Render vignette card
+        const v = question.vignette;
+        vignetteContainer.innerHTML = `
+            <div class="vignette-card">
+                <div class="vignette-section">
+                    <span class="vignette-label">Chief Complaint</span>
+                    <p class="vignette-text">${v.chiefComplaint}</p>
+                </div>
+                <div class="vignette-section">
+                    <span class="vignette-label">History</span>
+                    <p class="vignette-text">${v.history}</p>
+                </div>
+                <div class="vignette-section">
+                    <span class="vignette-label">Mental Status</span>
+                    <p class="vignette-text">${v.mentalStatus}</p>
+                </div>
+                <div class="vignette-section">
+                    <span class="vignette-label">Duration</span>
+                    <p class="vignette-text">${v.duration}</p>
+                </div>
+            </div>
+            <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--text-secondary);">What is the most likely diagnosis?</p>
+        `;
+        
+        // Render multiple choice options
+        optionsContainer.innerHTML = '';
+        const shuffledOptions = shuffleArray([...question.options]);
+        
+        shuffledOptions.forEach(option => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = option;
+            btn.onclick = () => checkAnswer(option);
+            optionsContainer.appendChild(btn);
+        });
+        
     } else {
-        elements.timerDisplay.textContent = GameState.isLearnMode ? '📖 Learn Mode' : '⏱ Off';
+        // Standard text input question
+        vignetteContainer.style.display = 'none';
+        optionsContainer.style.display = 'none';
+        inputContainer.style.display = 'flex';
+        
+        questionPrompt.innerHTML = `
+            ${questionHTML}
+            <p style="margin-top: 1rem; font-size: 1.2rem;">${question.prompt}</p>
+        `;
+        
+        textInput.value = '';
+        textInput.focus();
     }
-
-    updateScoreBoard();
-}
-
-function useHint() {
-    if (GameState.score < 5 || GameState.isLearnMode) return;
     
-    const q = GameState.questions[GameState.currentQuestionIndex];
-    const hintMsg = `💡 Hint: ICD-11 Code starts with "${q.icd11.substring(0, 3)}..."`;
+    feedbackContainer.style.display = 'none';
+    submitBtn.disabled = false;
     
-    const hintBox = document.createElement('div');
-    hintBox.className = 'feedback-box hint-box';
-    hintBox.style.backgroundColor = '#2c3e50';
-    hintBox.style.borderColor = '#f1c40f';
-    hintBox.textContent = hintMsg;
-    
-    elements.optionsContainer.before(hintBox);
-    
-    GameState.score -= 5;
-    GameState.hintsUsed++;
-    updateScoreBoard();
-    
-    if(elements.hintBtn) elements.hintBtn.disabled = true;
-    
-    setTimeout(() => hintBox.remove(), 4000);
-}
-
-function handleAnswer(selected, question) {
-    clearInterval(GameState.timer);
-    GameState.answeredCount++;
-    
-    const isCorrect = selected === question.answer;
-    const timeTaken = GameState.isTimedMode ? (30 - GameState.timeLeft) : 0;
-    
-    GameState.sessionHistory.push({
-        question: question.question,
-        userAnswer: selected,
-        correctAnswer: question.answer,
-        isCorrect,
-        timeTaken
-    });
-
-    if (isCorrect) {
-        GameState.correctCount++;
-        GameState.streak++;
-        if (GameState.streak > GameState.maxStreak) GameState.maxStreak = GameState.streak;
-        
-        let points = 10;
-        if (GameState.isTimedMode && GameState.timeLeft > 15) points += 5;
-        
-        GameState.score += points;
-        showFeedback(true, question, points);
+    // Start timer if enabled
+    if (isTimedMode && !isLearnMode) {
+        startTimer();
     } else {
-        GameState.streak = 0;
-        showFeedback(false, question, 0);
+        timerDisplay.textContent = '--';
     }
-
-    updateScoreBoard();
-    disableOptions();
 }
 
-function handleTimeout(question) {
-    clearInterval(GameState.timer);
-    GameState.streak = 0;
-    GameState.answeredCount++;
+// Start countdown timer
+function startTimer() {
+    timeRemaining = 30;
+    timerDisplay.textContent = timeRemaining;
+    timerDisplay.classList.remove('time-low', 'time-medium');
+    timerDisplay.classList.add('time-high');
     
-    GameState.sessionHistory.push({
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerDisplay.textContent = timeRemaining;
+        
+        // Update timer color
+        timerDisplay.classList.remove('time-high', 'time-medium', 'time-low');
+        if (timeRemaining > 15) {
+            timerDisplay.classList.add('time-high');
+        } else if (timeRemaining > 5) {
+            timerDisplay.classList.add('time-medium');
+        } else {
+            timerDisplay.classList.add('time-low');
+        }
+        
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            handleTimeout();
+        }
+    }, 1000);
+}
+
+// Handle timeout
+function handleTimeout() {
+    const question = questions[currentQuestionIndex];
+    streak = 0;
+    updateScore();
+    
+    feedbackContainer.innerHTML = `
+        <div class="feedback-timeout">
+            <h3>⏱ Time's Up!</h3>
+            <p>The correct answer was: <strong>${question.answer}</strong></p>
+            <div class="code-badges">
+                <span class="code-badge dsm">DSM-5-TR: ${question.dsmCode}</span>
+                <span class="code-badge icd">ICD-11: ${question.icdCode}</span>
+            </div>
+            ${question.explanation ? `<div class="explanation-box"><strong>Clinical Pearl:</strong> ${question.clinicalPearl || question.explanation}</div>` : ''}
+        </div>
+    `;
+    feedbackContainer.style.display = 'block';
+    feedbackContainer.className = 'feedback incorrect';
+    
+    // Record in history
+    sessionHistory.push({
+        questionId: question.id,
         question: question.question,
         userAnswer: 'Time Out',
         correctAnswer: question.answer,
         isCorrect: false,
-        timeTaken: 30
+        timeSpent: 30,
+        hintsUsed: 0
     });
     
-    showFeedback(false, question, 0, true);
-    disableOptions();
-    updateScoreBoard();
+    submitBtn.disabled = true;
+    setTimeout(nextQuestion, 4000);
 }
 
-function showFeedback(isCorrect, question, points, isTimeout = false) {
-    elements.feedbackBox.classList.remove('hidden');
-    elements.feedbackBox.classList.add(isCorrect ? 'correct' : 'incorrect');
+// Use hint
+function useHint() {
+    if (isLearnMode || !isTimedMode) {
+        alert('Hints are only available in Timed Mode with scoring enabled.');
+        return;
+    }
     
-    let msg = isCorrect 
-        ? `✅ Correct! +${points} points` 
-        : (isTimeout ? "⏰ Time's Up!" : '❌ Incorrect');
+    const question = questions[currentQuestionIndex];
+    if (score < 5) {
+        alert('Not enough points! You need at least 5 points to use a hint.');
+        return;
+    }
+    
+    // Deduct points
+    score -= 5;
+    hintsUsed++;
+    updateScore();
+    
+    // Reveal first 3 characters of ICD code
+    const hint = question.icdCode.substring(0, 3) + '...';
+    alert(`💡 Hint: ICD-11 code starts with "${hint}"`);
+}
+
+// Check answer
+function checkAnswer(userAnswer) {
+    clearInterval(timer);
+    
+    const question = questions[currentQuestionIndex];
+    const normalizedUser = (userAnswer || textInput.value).trim().toLowerCase();
+    const normalizedCorrect = question.answer.toLowerCase();
+    
+    // Simple matching logic
+    const isCorrect = normalizedUser === normalizedCorrect || 
+                      normalizedUser.includes(normalizedCorrect.split(' ')[0].toLowerCase());
+    
+    const timeSpent = isTimedMode ? 30 - timeRemaining : 0;
+    
+    if (isCorrect) {
+        correctAnswers++;
+        streak++;
+        if (streak > maxStreak) maxStreak = streak;
         
-    if (question.difficulty === 'hard' && isCorrect) msg += ' (Hard Question!)';
-
-    elements.feedbackBox.innerHTML = `
-        <div class="feedback-header">${msg}</div>
-        <div class="explanation-box">
-            <p><strong>Diagnosis:</strong> ${question.answer}</p>
-            <p><strong>DSM-5-TR:</strong> ${question.dsm5}</p>
-            <p><strong>ICD-11:</strong> ${question.icd11}</p>
-            ${question.explanation ? `<p><em>${question.explanation}</em></p>` : ''}
-            ${question.reference ? `<p class="reference"><small>Ref: ${question.reference}</small></p>` : ''}
-        </div>
-    `;
-    
-    elements.nextBtn.focus();
-}
-
-function disableOptions() {
-    const btns = elements.optionsContainer.querySelectorAll('button');
-    btns.forEach(b => b.disabled = true);
-}
-
-function updateScoreBoard() {
-    elements.scoreDisplay.textContent = `Score: ${GameState.score}`;
-    elements.streakDisplay.textContent = `🔥 ${GameState.streak}`;
-}
-
-function nextQuestion() {
-    GameState.currentQuestionIndex++;
-    if (elements.hintBtn) elements.hintBtn.disabled = false;
-    
-    if (GameState.currentQuestionIndex < GameState.questions.length) {
-        loadQuestion();
+        // Calculate score
+        let points = 10;
+        if (isTimedMode && timeRemaining > 15) {
+            points += 5; // Bonus for quick answer
+        }
+        score += points;
+        
+        feedbackContainer.innerHTML = `
+            <h3>✅ Correct!</h3>
+            <p><strong>${question.answer}</strong></p>
+            <div class="code-badges">
+                <span class="code-badge dsm">DSM-5-TR: ${question.dsmCode}</span>
+                <span class="code-badge icd">ICD-11: ${question.icdCode}</span>
+            </div>
+            ${question.explanation ? `<div class="explanation-box"><strong>Clinical Pearl:</strong> ${question.clinicalPearl || question.explanation}</div>` : ''}
+            ${question.reference ? `<div class="reference-box"><small>📚 ${question.reference}</small></div>` : ''}
+        `;
+        feedbackContainer.className = 'feedback correct';
     } else {
+        streak = 0;
+        feedbackContainer.innerHTML = `
+            <h3>❌ Incorrect</h3>
+            <p>The correct answer was: <strong>${question.answer}</strong></p>
+            <div class="code-badges">
+                <span class="code-badge dsm">DSM-5-TR: ${question.dsmCode}</span>
+                <span class="code-badge icd">ICD-11: ${question.icdCode}</span>
+            </div>
+            ${question.explanation ? `<div class="explanation-box"><strong>Clinical Pearl:</strong> ${question.clinicalPearl || question.explanation}</div>` : ''}
+        `;
+        feedbackContainer.className = 'feedback incorrect';
+    }
+    
+    feedbackContainer.style.display = 'block';
+    updateScore();
+    submitBtn.disabled = true;
+    
+    // Hide options after answering
+    if (question.type === 'vignette' && question.options) {
+        const optionBtns = optionsContainer.querySelectorAll('.option-btn');
+        optionBtns.forEach(btn => btn.disabled = true);
+    }
+    
+    // Record in history
+    sessionHistory.push({
+        questionId: question.id,
+        question: question.question,
+        userAnswer: userAnswer || textInput.value,
+        correctAnswer: question.answer,
+        isCorrect: isCorrect,
+        timeSpent: timeSpent,
+        hintsUsed: hintsUsed
+    });
+    
+    setTimeout(nextQuestion, 4000);
+}
+
+// Next question
+function nextQuestion() {
+    currentQuestionIndex++;
+    
+    if (currentQuestionIndex >= questions.length) {
         endGame();
+    } else {
+        showQuestion();
     }
 }
 
+// Update score display
+function updateScore() {
+    scoreDisplay.textContent = score;
+    streakDisplay.textContent = streak;
+}
+
+// End game
 function endGame() {
-    clearInterval(GameState.timer);
-    elements.gameScreen.classList.add('hidden');
-    elements.endScreen.classList.remove('hidden');
+    gameScreen.style.display = 'none';
+    endScreen.style.display = 'block';
     
-    GameState.saveProgress(GameState.score);
+    const totalQuestions = questions.length;
+    const accuracy = ((correctAnswers / totalQuestions) * 100).toFixed(1);
     
-    const accuracy = GameState.answeredCount > 0 
-        ? Math.round((GameState.correctCount / GameState.answeredCount) * 100) 
-        : 0;
+    // Save to localStorage
+    saveProgress(accuracy);
     
-    elements.finalScore.textContent = GameState.score;
-    
-    elements.finalStats.innerHTML = `
-        <div class="stat-grid">
-            <div class="stat-card">
-                <div class="stat-value">${accuracy}%</div>
-                <div class="stat-label">Accuracy</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${GameState.maxStreak} 🔥</div>
-                <div class="stat-label">Best Streak</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${GameState.hintsUsed}</div>
-                <div class="stat-label">Hints Used</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${GameState.correctCount}/${GameState.answeredCount}</div>
-                <div class="stat-label">Questions</div>
-            </div>
-        </div>
-        <p class="motivational-text">
-            ${accuracy >= 80 ? "🌟 Outstanding! You're ready for rounds!" : 
-              accuracy >= 50 ? "👍 Good effort! Keep studying the codes." : 
-              "📚 Review the DSM-5-TR and ICD-11 manuals and try again!"}
-        </p>
-    `;
-}
-
-function exportSessionReport() {
-    const date = new Date().toLocaleString();
-    let report = `MINDGRACE TRIVIA SESSION REPORT\nGenerated: ${date}\nCreated by Shirish (Mind Grace Neuropsychiatric Team)\n\n`;
-    report += `Final Score: ${GameState.score}\nAccuracy: ${Math.round((GameState.correctCount/GameState.answeredCount)*100) || 0}%\n\n`;
-    report += `--- QUESTION LOG ---\n`;
-    
-    GameState.sessionHistory.forEach((item, idx) => {
-        report += `${idx+1}. ${item.question}\n`;
-        report += `   Your Answer: ${item.userAnswer}\n`;
-        report += `   Correct: ${item.correctAnswer}\n`;
-        report += `   Result: ${item.isCorrect ? '✅' : '❌'}\n\n`;
-    });
-    
-    navigator.clipboard.writeText(report).then(() => {
-        alert('Session report copied to clipboard! You can paste it into your notes.');
-    }).catch(err => {
-        console.error('Failed to copy', err);
-        const blob = new Blob([report], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `mindgrace-report-${Date.now()}.txt`;
-        a.click();
-    });
-}
-
-function shuffleArray(array) {
-    const newArr = [...array];
-    for (let i = newArr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+    // Generate motivational message
+    let message = '';
+    if (accuracy >= 80) {
+        message = '🏆 Outstanding! You\'re ready for clinical rotations!';
+    } else if (accuracy >= 50) {
+        message = '👍 Good effort! Keep studying and you\'ll master this.';
+    } else {
+        message = '📚 Keep practicing! Review the DSM-5-TR and ICD-11 criteria.';
     }
-    return newArr;
+    
+    document.getElementById('final-score').textContent = `${score} points`;
+    document.getElementById('final-accuracy').textContent = `${accuracy}% (${correctAnswers}/${totalQuestions})`;
+    document.getElementById('final-streak').textContent = maxStreak;
+    document.getElementById('motivational-msg').textContent = message;
+    
+    // Generate export data
+    window.sessionExport = {
+        date: new Date().toISOString(),
+        score: score,
+        accuracy: accuracy,
+        totalQuestions: totalQuestions,
+        correctAnswers: correctAnswers,
+        maxStreak: maxStreak,
+        hintsUsed: hintsUsed,
+        history: sessionHistory
+    };
 }
+
+// Save progress to localStorage
+function saveProgress(accuracy) {
+    const saved = JSON.parse(localStorage.getItem('mindgrace_progress') || '{}');
+    
+    saved.totalSessions = (saved.totalSessions || 0) + 1;
+    saved.totalQuestions = (saved.totalQuestions || 0) + questions.length;
+    saved.totalCorrect = (saved.totalCorrect || 0) + correctAnswers;
+    
+    if (!saved.highScore || score > saved.highScore) {
+        saved.highScore = score;
+    }
+    
+    if (!saved.bestStreak || maxStreak > saved.bestStreak) {
+        saved.bestStreak = maxStreak;
+    }
+    
+    if (!saved.bestAccuracy || parseFloat(accuracy) > parseFloat(saved.bestAccuracy || 0)) {
+        saved.bestAccuracy = accuracy;
+    }
+    
+    localStorage.setItem('mindgrace_progress', JSON.stringify(saved));
+    updatePersistentStats();
+}
+
+// Update persistent stats display
+function updatePersistentStats() {
+    const saved = JSON.parse(localStorage.getItem('mindgrace_progress') || '{}');
+    
+    if (saved.highScore !== undefined) {
+        document.getElementById('stat-highscore').textContent = saved.highScore;
+    }
+    if (saved.totalQuestions !== undefined) {
+        document.getElementById('stat-total').textContent = saved.totalQuestions;
+    }
+    if (saved.bestStreak !== undefined) {
+        document.getElementById('stat-streak').textContent = saved.bestStreak;
+    }
+    if (saved.bestAccuracy !== undefined) {
+        document.getElementById('stat-accuracy').textContent = `${saved.bestAccuracy}%`;
+    }
+}
+
+// Export session report
+function exportReport() {
+    if (!window.sessionExport) return;
+    
+    const report = `MindGrace Trivia Session Report
+Generated: ${new Date(window.sessionExport.date).toLocaleString()}
+
+=== SUMMARY ===
+Score: ${window.sessionExport.score} points
+Accuracy: ${window.sessionReport.accuracy}% (${window.sessionExport.correctAnswers}/${window.sessionExport.totalQuestions})
+Max Streak: ${window.sessionExport.maxStreak}
+Hints Used: ${window.sessionExport.hintsUsed}
+
+=== QUESTION LOG ===
+${window.sessionExport.history.map((item, idx) => `
+Q${idx + 1}: ${item.question.substring(0, 60)}...
+Your Answer: ${item.userAnswer}
+Correct: ${item.correctAnswer}
+Result: ${item.isCorrect ? '✓' : '✗'}
+Time: ${item.timeSpent}s
+`).join('\n')}
+
+---
+Created by Shirish | Mind Grace Neuropsychiatric Team
+`;
+    
+    const blob = new Blob([report], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mindgrace-report-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Event Listeners
+submitBtn.addEventListener('click', () => {
+    if (textInput.value.trim()) {
+        checkAnswer();
+    }
+});
+
+hintBtn.addEventListener('click', useHint);
+
+textInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && textInput.value.trim()) {
+        checkAnswer();
+    }
+});
+
+// Filter change handlers
+categoryFilter.addEventListener('change', () => {
+    // Reset game when filters change
+    if (gameScreen.style.display === 'block') {
+        alert('Filters changed. Start a new game to apply changes.');
+    }
+});
+
+difficultyFilter.addEventListener('change', () => {
+    if (gameScreen.style.display === 'block') {
+        alert('Filters changed. Start a new game to apply changes.');
+    }
+});
+
+// Initialize on load
+window.addEventListener('DOMContentLoaded', () => {
+    loadQuestions();
+    updatePersistentStats();
+});
