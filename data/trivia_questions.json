@@ -1,244 +1,407 @@
 {
+  "version": "5.0",
+  "lastUpdated": "2024-01-15",
+  "totalQuestions": 25,
+  "categories": [
+    "Depressive Disorders",
+    "Anxiety Disorders",
+    "Bipolar Disorders",
+    "Trauma-Related Disorders",
+    "Schizophrenia Spectrum",
+    "Neurodevelopmental Disorders",
+    "Personality Disorders",
+    "Feeding & Eating Disorders",
+    "Substance-Related Disorders",
+    "Obsessive-Compulsive Disorders",
+    "Sleep-Wake Disorders",
+    "Neurocognitive Disorders",
+    "Somatic Symptom Disorders",
+    "Dissociative Disorders",
+    "Gender Dysphoria"
+  ],
   "questions": [
     {
-      "id": 1,
-      "question": "Which disorder is characterized by persistent depressive symptoms lasting at least 2 years in adults?",
-      "options": ["Major Depressive Disorder", "Persistent Depressive Disorder (Dysthymia)", "Bipolar I Disorder", "Cyclothymic Disorder"],
-      "answer": "Persistent Depressive Disorder (Dysthymia)",
+      "id": "q001",
+      "type": "standard",
       "category": "Depressive Disorders",
-      "difficulty": "medium",
-      "dsm5": "300.4 (F34.1)",
-      "icd11": "6A72",
-      "explanation": "Persistent Depressive Disorder (formerly Dysthymia) involves chronic depression lasting at least 2 years in adults (1 year in children). Symptoms are less severe than Major Depression but more enduring.",
-      "reference": "DSM-5-TR p. 381; ICD-11 6A72"
-    },
-    {
-      "id": 2,
-      "question": "What is the essential feature of Borderline Personality Disorder?",
-      "options": ["Grandiosity and need for admiration", "Pervasive pattern of instability in interpersonal relationships, self-image, and affects", "Social inhibition and feelings of inadequacy", "Detachment from social relationships"],
-      "answer": "Pervasive pattern of instability in interpersonal relationships, self-image, and affects",
-      "category": "Personality Disorders",
       "difficulty": "easy",
-      "dsm5": "301.83 (F60.3)",
-      "icd11": "6D10",
-      "explanation": "Borderline Personality Disorder is characterized by pervasive instability in relationships, self-image, and emotional regulation, often with marked impulsivity beginning by early adulthood.",
-      "reference": "DSM-5-TR p. 763; ICD-11 6D10"
+      "prompt": "What is the ICD-11 code for a Single Episode of Major Depressive Disorder, Moderate?",
+      "answer": "6A71.1",
+      "dsmCode": "296.22",
+      "explanation": "ICD-11 uses 6A71 for Major Depressive Disorder, Single Episode. The fourth character specifies severity: .0 for mild, .1 for moderate, .2 for severe.",
+      "clinicalPearl": "Unlike DSM-5, ICD-11 explicitly codes severity in the main alphanumeric string. Remember: 6A71 = MDD Single, 6A72 = MDD Recurrent."
     },
     {
-      "id": 3,
-      "question": "Which anxiety disorder involves excessive anxiety and worry occurring more days than not for at least 6 months?",
-      "options": ["Panic Disorder", "Social Anxiety Disorder", "Generalized Anxiety Disorder", "Specific Phobia"],
-      "answer": "Generalized Anxiety Disorder",
+      "id": "q002",
+      "type": "standard",
       "category": "Anxiety Disorders",
-      "difficulty": "easy",
-      "dsm5": "300.02 (F41.1)",
-      "icd11": "6B00",
-      "explanation": "Generalized Anxiety Disorder requires excessive anxiety and worry about multiple events/activities for at least 6 months, difficult to control, with associated physical symptoms.",
-      "reference": "DSM-5-TR p. 316; ICD-11 6B00"
-    },
-    {
-      "id": 4,
-      "question": "In DSM-5-TR, what replaced the term 'Gender Identity Disorder'?",
-      "options": ["Gender Dysphoria", "Transgender Identity", "Gender Incongruence", "Sexual Identity Disorder"],
-      "answer": "Gender Dysphoria",
-      "category": "Gender Dysphoria",
       "difficulty": "medium",
-      "dsm5": "302.85 (F64.0)",
-      "icd11": "HA60",
-      "explanation": "DSM-5 introduced 'Gender Dysphoria' to emphasize that distress related to gender incongruence is the clinical focus, not identity itself. ICD-11 uses 'Gender Incongruence' under sexual health conditions.",
-      "reference": "DSM-5-TR p. 511; ICD-11 HA60"
+      "prompt": "Provide the DSM-5-TR code for Panic Disorder.",
+      "answer": "300.01",
+      "icdCode": "6B01",
+      "explanation": "Panic Disorder is coded 300.01 in DSM-5-TR and 6B01 in ICD-11. Both require recurrent unexpected panic attacks.",
+      "clinicalPearl": "Requires recurrent unexpected panic attacks AND at least one month of concern about additional attacks or maladaptive behavioral changes."
     },
     {
-      "id": 5,
-      "question": "Which disorder requires at least one manic episode for diagnosis?",
-      "options": ["Bipolar II Disorder", "Cyclothymic Disorder", "Bipolar I Disorder", "Major Depressive Disorder"],
-      "answer": "Bipolar I Disorder",
+      "id": "q003",
+      "type": "vignette",
+      "category": "Schizophrenia Spectrum",
+      "difficulty": "hard",
+      "vignette": {
+        "chiefComplaint": "The voices won't stop telling me I'm in danger.",
+        "history": "23-year-old male with 6-month history of auditory hallucinations, delusions of persecution, and social withdrawal. No substance use.",
+        "mentalStatus": "Disheveled appearance. Responding to internal stimuli. Delusional beliefs about government surveillance.",
+        "duration": "Symptoms present for 8 months with continuous signs of disturbance."
+      },
+      "options": [
+        "Schizophreniform Disorder",
+        "Schizophrenia",
+        "Brief Psychotic Disorder",
+        "Delusional Disorder"
+      ],
+      "answer": "Schizophrenia",
+      "dsmCode": "295.90",
+      "icdCode": "6A20",
+      "explanation": "Two or more Criterion A symptoms (delusions, hallucinations, disorganized speech, grossly disorganized behavior, negative symptoms) for 6+ months with functional decline.",
+      "clinicalPearl": "Key differentiator: Schizophrenia requires 6+ months; Schizophreniform is 1-6 months; Brief Psychotic Disorder is <1 month."
+    },
+    {
+      "id": "q004",
+      "type": "standard",
       "category": "Bipolar Disorders",
-      "difficulty": "easy",
-      "dsm5": "296.xx (F31.x)",
-      "icd11": "6A60",
-      "explanation": "Bipolar I Disorder is defined by the occurrence of at least one manic episode. Depressive episodes are common but not required for diagnosis.",
-      "reference": "DSM-5-TR p. 123; ICD-11 6A60"
+      "difficulty": "medium",
+      "prompt": "What is the ICD-11 code for Bipolar I Disorder, Current Episode Manic?",
+      "answer": "6A60",
+      "dsmCode": "296.42",
+      "explanation": "ICD-11 uses 6A60 for Bipolar I Disorder. Specifiers are added for current episode type.",
+      "clinicalPearl": "Bipolar I requires at least ONE manic episode. Depressive episodes are common but not required for diagnosis."
     },
     {
-      "id": 6,
-      "question": "What is the hallmark symptom of PTSD that distinguishes it from other trauma-related disorders?",
-      "options": ["Avoidance of trauma reminders", "Intrusive recollections of the traumatic event", "Hyperarousal symptoms", "All of the above are required"],
-      "answer": "All of the above are required",
+      "id": "q005",
+      "type": "vignette",
       "category": "Trauma-Related Disorders",
       "difficulty": "medium",
-      "dsm5": "309.81 (F43.10)",
-      "icd11": "6B40",
-      "explanation": "PTSD requires all four symptom clusters: intrusion symptoms, avoidance, negative alterations in cognition/mood, and hyperarousal, persisting for more than 1 month after trauma exposure.",
-      "reference": "DSM-5-TR p. 309; ICD-11 6B40"
+      "vignette": {
+        "chiefComplaint": "I can't stop thinking about the accident. I avoid driving now.",
+        "history": "35-year-old female involved in serious car crash 3 months ago. Experiences flashbacks and nightmares.",
+        "mentalStatus": "Anxious, hypervigilant, startles easily. Avoids discussion of trauma and driving.",
+        "duration": "Symptoms began 2 weeks after accident and persist for 3 months causing significant impairment."
+      },
+      "options": [
+        "Acute Stress Disorder",
+        "Posttraumatic Stress Disorder (PTSD)",
+        "Adjustment Disorder",
+        "Generalized Anxiety Disorder"
+      ],
+      "answer": "Posttraumatic Stress Disorder (PTSD)",
+      "dsmCode": "309.81",
+      "icdCode": "6B40",
+      "explanation": "PTSD requires exposure to actual/threatened death, serious injury, or sexual violence with intrusion, avoidance, negative cognitions/mood, and arousal symptoms lasting >1 month.",
+      "clinicalPearl": "Acute Stress Disorder is 3 days to 1 month post-trauma; PTSD is diagnosed AFTER 1 month. Both share similar symptom clusters."
     },
     {
-      "id": 7,
-      "question": "Which neurodevelopmental disorder is characterized by persistent deficits in social communication and restricted, repetitive patterns of behavior?",
-      "options": ["ADHD", "Autism Spectrum Disorder", "Intellectual Disability", "Social Communication Disorder"],
-      "answer": "Autism Spectrum Disorder",
+      "id": "q006",
+      "type": "standard",
       "category": "Neurodevelopmental Disorders",
       "difficulty": "easy",
-      "dsm5": "299.00 (F84.0)",
-      "icd11": "6A02",
-      "explanation": "ASD is characterized by deficits in social-emotional reciprocity, nonverbal communication, and relationship development, plus restricted/repetitive behaviors, interests, or activities.",
-      "reference": "DSM-5-TR p. 50; ICD-11 6A02"
+      "prompt": "Enter the DSM-5-TR code for Autism Spectrum Disorder.",
+      "answer": "299.00",
+      "icdCode": "6A02",
+      "explanation": "Autism Spectrum Disorder is 299.00 in DSM-5-TR and 6A02 in ICD-11. Both require deficits in social communication and restricted/repetitive behaviors.",
+      "clinicalPearl": "DSM-5 consolidated Autistic Disorder, Asperger's Disorder, Childhood Disintegrative Disorder, and PDD-NOS into single ASD diagnosis with severity specifiers."
     },
     {
-      "id": 8,
-      "question": "In Schizophrenia, which symptom type is considered a 'positive' symptom?",
-      "options": ["Flat affect", "Avolition", "Delusions", "Social withdrawal"],
-      "answer": "Delusions",
-      "category": "Schizophrenia Spectrum",
+      "id": "q007",
+      "type": "standard",
+      "category": "Personality Disorders",
+      "difficulty": "hard",
+      "prompt": "What is the ICD-11 code for Borderline Personality Disorder?",
+      "answer": "6D10",
+      "dsmCode": "301.83",
+      "explanation": "ICD-11 uses 6D10 for Emotionally Unstable Personality Disorder, Borderline Type. This represents a major shift from categorical to dimensional approach.",
+      "clinicalPearl": "ICD-11 reformed personality disorder classification: First assess severity (mild/moderate/severe), then specify trait domains (negative affectivity, detachment, etc.)."
+    },
+    {
+      "id": "q008",
+      "type": "vignette",
+      "category": "Feeding & Eating Disorders",
       "difficulty": "medium",
-      "dsm5": "295.90 (F20.9)",
-      "icd11": "6A20",
-      "explanation": "Positive symptoms add something to normal experience (delusions, hallucinations, disorganized speech/behavior). Negative symptoms involve loss of function (flat affect, avolition, alogia).",
-      "reference": "DSM-5-TR p. 99; ICD-11 6A20"
+      "vignette": {
+        "chiefComplaint": "I know I'm too thin but I still feel fat when I look in the mirror.",
+        "history": "19-year-old female with BMI of 15. Restricts food intake to <500 cal/day, exercises 3 hours daily.",
+        "mentalStatus": "Preoccupied with weight and calories. Intense fear of gaining weight. Distorted body image.",
+        "duration": "Significant weight loss (25 lbs) over 8 months. Amenorrhea for 4 months."
+      },
+      "options": [
+        "Bulimia Nervosa",
+        "Anorexia Nervosa",
+        "Binge-Eating Disorder",
+        "Avoidant/Restrictive Food Intake Disorder (ARFID)"
+      ],
+      "answer": "Anorexia Nervosa",
+      "dsmCode": "307.1",
+      "icdCode": "6B80",
+      "explanation": "Anorexia Nervosa requires: restriction leading to low body weight, intense fear of gaining weight, and disturbed body image. BMI <18.5 in adults.",
+      "clinicalPearl": "Key difference from Bulimia: Anorexia involves restrictive behavior without regular binge-purge cycles. Specifier: restricting type vs. binge-eating/purging type."
     },
     {
-      "id": 9,
-      "question": "Which eating disorder involves recurrent binge eating without compensatory behaviors?",
-      "options": ["Anorexia Nervosa", "Bulimia Nervosa", "Binge-Eating Disorder", "Avoidant/Restrictive Food Intake Disorder"],
-      "answer": "Binge-Eating Disorder",
-      "category": "Feeding and Eating Disorders",
+      "id": "q009",
+      "type": "standard",
+      "category": "Substance-Related Disorders",
       "difficulty": "easy",
-      "dsm5": "307.51 (F50.8)",
-      "icd11": "6B82",
-      "explanation": "Binge-Eating Disorder involves recurrent binge episodes with loss of control, marked distress, and absence of regular compensatory behaviors seen in Bulimia Nervosa.",
-      "reference": "DSM-5-TR p. 372; ICD-11 6B82"
+      "prompt": "What is the DSM-5-TR code for Alcohol Use Disorder, Moderate?",
+      "answer": "305.00",
+      "icdCode": "6C40.1",
+      "explanation": "Alcohol Use Disorder is 305.00 in DSM-5-TR for mild/moderate severity. Severity: Mild (2-3 criteria), Moderate (4-5), Severe (6+).",
+      "clinicalPearl": "DSM-5 merged alcohol abuse and dependence into single Use Disorder continuum. ICD-11 uses 6C40 with fourth character for severity."
     },
     {
-      "id": 10,
-      "question": "What is the minimum duration of symptoms required for a Substance Use Disorder diagnosis?",
-      "options": ["1 month", "3 months", "6 months", "12 months"],
-      "answer": "12 months",
-      "category": "Substance Use Disorders",
-      "difficulty": "medium",
-      "dsm5": "3x5.xx (F1x.xx)",
-      "icd11": "6C40",
-      "explanation": "Substance Use Disorder requires a problematic pattern of use leading to impairment/distress, manifested by at least 2 of 11 criteria within a 12-month period.",
-      "reference": "DSM-5-TR p. 483; ICD-11 6C40"
-    },
-    {
-      "id": 11,
-      "question": "Which sleep disorder involves repeated episodes of complete or partial upper airway obstruction during sleep?",
-      "options": ["Insomnia Disorder", "Narcolepsy", "Obstructive Sleep Apnea Hypopnea", "Breathing-Related Sleep Disorder"],
-      "answer": "Obstructive Sleep Apnea Hypopnea",
-      "category": "Sleep-Wake Disorders",
-      "difficulty": "medium",
-      "dsm5": "327.23 (G47.33)",
-      "icd11": "7A01",
-      "explanation": "OSAHS is characterized by repeated episodes of upper airway collapse during sleep, resulting in breathing pauses (apneas) or reductions (hypopneas), often with oxygen desaturation.",
-      "reference": "DSM-5-TR p. 418; ICD-11 7A01"
-    },
-    {
-      "id": 12,
-      "question": "What distinguishes Obsessive-Compulsive Disorder from normal obsessive thoughts?",
-      "options": ["Frequency of thoughts", "Time-consuming nature and significant distress/impairment", "Content of the obsessions", "Age of onset"],
-      "answer": "Time-consuming nature and significant distress/impairment",
+      "id": "q010",
+      "type": "standard",
       "category": "Obsessive-Compulsive Disorders",
       "difficulty": "medium",
-      "dsm5": "300.3 (F42)",
-      "icd11": "6B20",
-      "explanation": "OCD obsessions/compulsions are time-consuming (>1 hour/day) or cause clinically significant distress/impairment. Normal worries don't reach this threshold of severity.",
-      "reference": "DSM-5-TR p. 237; ICD-11 6B20"
+      "prompt": "Provide the ICD-11 code for Obsessive-Compulsive Disorder.",
+      "answer": "6B20",
+      "dsmCode": "300.3",
+      "explanation": "OCD is 6B20 in ICD-11 and 300.3 in DSM-5-TR. Characterized by obsessions and/or compulsions causing distress/impairment.",
+      "clinicalPearl": "ICD-11 moved OCD from Anxiety Disorders to new 'Obsessive-Compulsive and Related Disorders' chapter, reflecting distinct neurobiology."
     },
     {
-      "id": 13,
-      "question": "Which neurocognitive disorder is characterized by progressive memory impairment plus at least one other cognitive domain deficit?",
-      "options": ["Delirium", "Major Neurocognitive Disorder (Dementia)", "Mild Neurocognitive Disorder", "Amnestic Disorder"],
-      "answer": "Major Neurocognitive Disorder (Dementia)",
+      "id": "q011",
+      "type": "vignette",
       "category": "Neurocognitive Disorders",
-      "difficulty": "easy",
-      "dsm5": "3xx.x (depending on etiology)",
-      "icd11": "6D80",
-      "explanation": "Major NCD requires significant cognitive decline in one or more domains (memory, executive function, attention, language, perceptual-motor, social cognition) interfering with independence.",
-      "reference": "DSM-5-TR p. 603; ICD-11 6D80"
+      "difficulty": "hard",
+      "vignette": {
+        "chiefComplaint": "I keep forgetting where I put things and getting lost in familiar places.",
+        "history": "72-year-old male with progressive memory decline over 2 years. Difficulty managing finances and medications.",
+        "mentalStatus": "MMSE score 22/30. Impaired recent memory, word-finding difficulties. Preserved remote memory.",
+        "duration": "Gradual onset over 2 years with steady progression affecting ADLs."
+      },
+      "options": [
+        "Mild Cognitive Impairment",
+        "Major Neurocognitive Disorder due to Alzheimer's Disease",
+        "Delirium",
+        "Normal Aging"
+      ],
+      "answer": "Major Neurocognitive Disorder due to Alzheimer's Disease",
+      "dsmCode": "290.0",
+      "icdCode": "8A20",
+      "explanation": "Major NCD requires significant cognitive decline interfering with independence. Alzheimer's is most common etiology with insidious onset and gradual progression.",
+      "clinicalPearl": "Mild NCD: modest decline, independence maintained. Major NCD: significant decline, independence compromised. MMSE <24 suggests major NCD."
     },
     {
-      "id": 14,
-      "question": "What is the key difference between Bipolar I and Bipolar II Disorder?",
-      "options": ["Bipolar II has more severe depression", "Bipolar I requires mania; Bipolar II requires hypomania and major depression", "Bipolar II doesn't include depression", "There is no difference"],
-      "answer": "Bipolar I requires mania; Bipolar II requires hypomania and major depression",
+      "id": "q012",
+      "type": "standard",
+      "category": "Sleep-Wake Disorders",
+      "difficulty": "easy",
+      "prompt": "What is the DSM-5-TR code for Insomnia Disorder?",
+      "answer": "307.42",
+      "icdCode": "7A00",
+      "explanation": "Insomnia Disorder is 307.42 in DSM-5-TR and 7A00 in ICD-11. Requires difficulty initiating/maintaining sleep ≥3 nights/week for ≥3 months.",
+      "clinicalPearl": "Must cause significant distress/impairment and occur despite adequate opportunity for sleep. Rule out other sleep disorders first."
+    },
+    {
+      "id": "q013",
+      "type": "vignette",
+      "category": "Dissociative Disorders",
+      "difficulty": "hard",
+      "vignette": {
+        "chiefComplaint": "I found myself in a different city with no memory of how I got there.",
+        "history": "28-year-old female with history of childhood trauma. Episodes of 'losing time' and finding unfamiliar items in possession.",
+        "mentalStatus": "Alert but confused about recent events. No neurological findings. Appears distressed.",
+        "duration": "Recurrent episodes over 6 months following stressors."
+      },
+      "options": [
+        "Dissociative Amnesia",
+        "Dissociative Identity Disorder",
+        "Depersonalization/Derealization Disorder",
+        "Dissociative Fugue"
+      ],
+      "answer": "Dissociative Fugue",
+      "dsmCode": "300.13",
+      "icdCode": "6B64",
+      "explanation": "Dissociative Fugue involves sudden unexpected travel away from home with inability to recall past and confusion about identity.",
+      "clinicalPearl": "In DSM-5, fugue is specified as 'with dissociative fugue' under Dissociative Amnesia. ICD-11 codes it separately as 6B64."
+    },
+    {
+      "id": "q014",
+      "type": "standard",
+      "category": "Somatic Symptom Disorders",
+      "difficulty": "medium",
+      "prompt": "Provide the ICD-11 code for Somatic Symptom Disorder.",
+      "answer": "6C20",
+      "dsmCode": "300.82",
+      "explanation": "Somatic Symptom Disorder is 6C20 in ICD-11 and 300.82 in DSM-5-TR. Requires one+ somatic symptoms causing distress/disruption with excessive thoughts/feelings/behaviors.",
+      "clinicalPearl": "Key change from Somatization Disorder: focus is on DISTRESS about symptoms, not number of symptoms. Medical explanation may or may not exist."
+    },
+    {
+      "id": "q015",
+      "type": "vignette",
+      "category": "Gender Dysphoria",
+      "difficulty": "medium",
+      "vignette": {
+        "chiefComplaint": "I've always felt like I was born in the wrong body. I want to transition.",
+        "history": "16-year-old assigned male at birth. Persistent identification as female since age 5. Requests hormone therapy.",
+        "mentalStatus": "Congruent gender identity as female. Significant distress about secondary sex characteristics. No psychosis.",
+        "duration": "Persistent feelings for 11 years causing clinically significant distress."
+      },
+      "options": [
+        "Gender Dysphoria",
+        "Transvestic Disorder",
+        "Body Dysmorphic Disorder",
+        "Gender Incongruence"
+      ],
+      "answer": "Gender Dysphoria",
+      "dsmCode": "302.85",
+      "icdCode": "HA60",
+      "explanation": "Gender Dysphoria requires marked incongruence between experienced and assigned gender for ≥6 months with significant distress/impairment.",
+      "clinicalPearl": "ICD-11 uses 'Gender Incongruence' (HA60) and moved it from Mental Disorders to 'Conditions Related to Sexual Health' to reduce stigma."
+    },
+    {
+      "id": "q016",
+      "type": "standard",
+      "category": "Depressive Disorders",
+      "difficulty": "hard",
+      "prompt": "What is the DSM-5-TR code for Persistent Depressive Disorder (Dysthymia)?",
+      "answer": "300.4",
+      "icdCode": "6A74",
+      "explanation": "Persistent Depressive Disorder is 300.4 in DSM-5-TR and 6A74 in ICD-11. Combines chronic major depression and dysthymic disorder.",
+      "clinicalPearl": "Requires depressed mood for ≥2 years (≥1 year in children/adolescents) with ≥2 additional symptoms. May have superimposed major depressive episodes."
+    },
+    {
+      "id": "q017",
+      "type": "standard",
+      "category": "Anxiety Disorders",
+      "difficulty": "easy",
+      "prompt": "Enter the ICD-11 code for Generalized Anxiety Disorder.",
+      "answer": "6B00",
+      "dsmCode": "300.02",
+      "explanation": "GAD is 6B00 in ICD-11 and 300.02 in DSM-5-TR. Requires excessive anxiety/worry occurring more days than not for ≥6 months.",
+      "clinicalPearl": "Key feature: difficulty controlling worry. Associated with restlessness, fatigue, concentration problems, irritability, muscle tension, sleep disturbance."
+    },
+    {
+      "id": "q018",
+      "type": "vignette",
       "category": "Bipolar Disorders",
       "difficulty": "hard",
-      "dsm5": "296.xx (F31.x)",
-      "icd11": "6A60/6A61",
-      "explanation": "Bipolar I requires at least one manic episode (depression not required). Bipolar II requires at least one hypomanic AND one major depressive episode, with NO history of mania.",
-      "reference": "DSM-5-TR p. 123-133; ICD-11 6A60-6A61"
+      "vignette": {
+        "chiefComplaint": "I haven't slept in 4 days but I feel amazing! I'm starting three new businesses.",
+        "history": "31-year-old male with elevated mood, grandiosity, pressured speech, and reckless spending for 10 days.",
+        "mentalStatus": "Euphoric mood. Flight of ideas. Psychomotor agitation. No psychotic features.",
+        "duration": "Acute onset 10 days ago with significant functional impairment requiring hospitalization."
+      },
+      "options": [
+        "Hypomanic Episode",
+        "Manic Episode",
+        "Cyclothymic Disorder",
+        "Substance-Induced Mood Disorder"
+      ],
+      "answer": "Manic Episode",
+      "dsmCode": "296.02",
+      "icdCode": "6A60",
+      "explanation": "Manic Episode requires abnormally elevated/expansive/irritable mood for ≥1 week (or any duration if hospitalized) with ≥3 DIGFAST symptoms causing marked impairment.",
+      "clinicalPearl": "Hypomania: ≥4 days, NO marked impairment, NO hospitalization. Mania: ≥1 week OR hospitalization, WITH marked impairment. This distinction determines Bipolar I vs II."
     },
     {
-      "id": 15,
-      "question": "Which personality disorder cluster includes Avoidant, Dependent, and Obsessive-Compulsive Personality Disorders?",
-      "options": ["Cluster A (Odd/Eccentric)", "Cluster B (Dramatic/Emotional)", "Cluster C (Anxious/Fearful)", "None of the above"],
-      "answer": "Cluster C (Anxious/Fearful)",
-      "category": "Personality Disorders",
-      "difficulty": "medium",
-      "dsm5": "301.xx (F60.x)",
-      "icd11": "6D1x",
-      "explanation": "Cluster C includes anxious/fearful PDs: Avoidant (social inhibition), Dependent (submissive/clinging), and OCPD (preoccupation with orderliness/perfectionism).",
-      "reference": "DSM-5-TR p. 761; ICD-11 6D10-6D19"
-    },
-    {
-      "id": 16,
-      "question": "What is the primary distinguishing feature of Panic Disorder?",
-      "options": ["Single panic attack", "Recurrent unexpected panic attacks plus worry about future attacks", "Panic attacks only in social situations", "Panic attacks triggered by specific phobias"],
-      "answer": "Recurrent unexpected panic attacks plus worry about future attacks",
-      "category": "Anxiety Disorders",
-      "difficulty": "medium",
-      "dsm5": "300.01 (F41.0)",
-      "icd11": "6B01",
-      "explanation": "Panic Disorder requires recurrent unexpected panic attacks PLUS at least 1 month of persistent concern about additional attacks or their consequences, or significant maladaptive behavioral changes.",
-      "reference": "DSM-5-TR p. 221; ICD-11 6B01"
-    },
-    {
-      "id": 17,
-      "question": "Which ADHD presentation requires 6+ symptoms of inattention but fewer than 6 hyperactivity-impulsivity symptoms?",
-      "options": ["Combined Presentation", "Predominantly Hyperactive-Impulsive Presentation", "Predominantly Inattentive Presentation", "Other Specified ADHD"],
-      "answer": "Predominantly Inattentive Presentation",
-      "category": "Neurodevelopmental Disorders",
-      "difficulty": "easy",
-      "dsm5": "314.00 (F90.0)",
-      "icd11": "6A05",
-      "explanation": "ADHD Predominantly Inattentive Presentation requires 6+ inattention symptoms (5+ in adults 17+) with fewer than 6 hyperactivity-impulsivity symptoms present for 6+ months.",
-      "reference": "DSM-5-TR p. 59; ICD-11 6A05"
-    },
-    {
-      "id": 18,
-      "question": "What duration distinguishes Acute Stress Disorder from PTSD?",
-      "options": ["ASD: 3 days - 1 month; PTSD: >1 month", "ASD: <24 hours; PTSD: >24 hours", "ASD: 1 week - 3 months; PTSD: >3 months", "There is no duration difference"],
-      "answer": "ASD: 3 days - 1 month; PTSD: >1 month",
+      "id": "q019",
+      "type": "standard",
       "category": "Trauma-Related Disorders",
-      "difficulty": "hard",
-      "dsm5": "308.3 (F43.0)",
-      "icd11": "6B40/QB34",
-      "explanation": "Acute Stress Disorder occurs 3 days to 1 month post-trauma. If symptoms persist beyond 1 month, diagnosis changes to PTSD. Both require trauma exposure.",
-      "reference": "DSM-5-TR p. 280; ICD-11 6B40"
+      "difficulty": "medium",
+      "prompt": "What is the ICD-11 code for Complex PTSD?",
+      "answer": "6B41",
+      "dsmCode": "Not in DSM-5-TR",
+      "explanation": "Complex PTSD is 6B41 in ICD-11. Includes core PTSD symptoms PLUS disturbances in self-organization (affect dysregulation, negative self-concept, interpersonal difficulties).",
+      "clinicalPearl": "ICD-11 recognizes CPTSD as distinct from PTSD. DSM-5-TR does NOT include CPTSD as separate diagnosis (symptoms captured under PTSD + comorbidities)."
     },
     {
-      "id": 19,
-      "question": "Which specifier indicates seasonal pattern in depressive disorders?",
-      "options": ["With Seasonal Pattern", "With Melancholic Features", "With Atypical Features", "With Psychotic Features"],
-      "answer": "With Seasonal Pattern",
-      "category": "Depressive Disorders",
+      "id": "q020",
+      "type": "standard",
+      "category": "Neurodevelopmental Disorders",
+      "difficulty": "medium",
+      "prompt": "Provide the DSM-5-TR code for Attention-Deficit/Hyperactivity Disorder, Combined Presentation.",
+      "answer": "314.01",
+      "icdCode": "6A05",
+      "explanation": "ADHD Combined Presentation is 314.01 in DSM-5-TR and 6A05 in ICD-11. Requires ≥6 symptoms of inattention AND ≥6 symptoms of hyperactivity-impulsivity.",
+      "clinicalPearl": "Presentations: Combined (314.01), Predominantly Inattentive (314.00), Predominantly Hyperactive-Impulsive (314.01). Onset before age 12. Symptoms in ≥2 settings."
+    },
+    {
+      "id": "q021",
+      "type": "vignette",
+      "category": "Personality Disorders",
+      "difficulty": "hard",
+      "vignette": {
+        "chiefComplaint": "Everyone abandons me. I hate being alone but I push people away.",
+        "history": "24-year-old female with unstable relationships, self-harm, emotional lability, and chronic emptiness.",
+        "mentalStatus": "Intense affect. Fear of abandonment. Splitting (idealization/devaluation). Impulsive behaviors.",
+        "duration": "Pattern evident since adolescence across multiple contexts."
+      },
+      "options": [
+        "Narcissistic Personality Disorder",
+        "Borderline Personality Disorder",
+        "Histrionic Personality Disorder",
+        "Antisocial Personality Disorder"
+      ],
+      "answer": "Borderline Personality Disorder",
+      "dsmCode": "301.83",
+      "icdCode": "6D10",
+      "explanation": "BPD requires ≥5 of: frantic efforts to avoid abandonment, unstable relationships, identity disturbance, impulsivity, suicidality, affective instability, emptiness, anger, paranoia/dissociation.",
+      "clinicalPearl": "Mnemonic: AM SUICIDE - Abandonment, Mood swings, Suicidality, Unstable relationships, Impulsivity, Chronic emptiness, Identity disturbance, Disassociation, Explosive anger."
+    },
+    {
+      "id": "q022",
+      "type": "standard",
+      "category": "Obsessive-Compulsive Disorders",
       "difficulty": "easy",
-      "dsm5": "Specifier for MDD/Persistent Depressive Disorder",
-      "icd11": "Qualifier for 6A70/6A72",
-      "explanation": "'With Seasonal Pattern' specifier applies when there's a regular temporal relationship between onset/remission of episodes and time of year (typically fall/winter onset, spring remission).",
-      "reference": "DSM-5-TR p. 189; ICD-11 6A70.Q"
+      "prompt": "What is the DSM-5-TR code for Body Dysmorphic Disorder?",
+      "answer": "300.7",
+      "icdCode": "6B21",
+      "explanation": "Body Dysmorphic Disorder is 300.7 in DSM-5-TR and 6B21 in ICD-11. Preoccupation with perceived defects/flaws in physical appearance not observable to others.",
+      "clinicalPearl": "Specifier: with muscle dysmorphia. Insight specifier: good/fair, poor, absent/delusional. Repetitive behaviors (mirror checking, seeking reassurance) required."
     },
     {
-      "id": 20,
-      "question": "In ICD-11, where are conditions related to sexual health classified?",
-      "options": ["Mental Disorders chapter", "Separate chapter on Sexual Health", "Genitourinary diseases chapter", "Endocrine disorders chapter"],
-      "answer": "Separate chapter on Sexual Health",
-      "category": "ICD-11 Classification",
+      "id": "q023",
+      "type": "standard",
+      "category": "Feeding & Eating Disorders",
+      "difficulty": "medium",
+      "prompt": "Enter the ICD-11 code for Binge-Eating Disorder.",
+      "answer": "6B82",
+      "dsmCode": "307.51",
+      "explanation": "BED is 6B82 in ICD-11 and 307.51 in DSM-5-TR. Recurrent binge eating with loss of control, marked distress, ≥1/week for 3 months WITHOUT compensatory behaviors.",
+      "clinicalPearl": "Key difference from Bulimia: BED has NO regular compensatory behaviors (purging, fasting, excessive exercise). Most common eating disorder in US."
+    },
+    {
+      "id": "q024",
+      "type": "vignette",
+      "category": "Substance-Related Disorders",
       "difficulty": "hard",
-      "dsm5": "N/A (ICD-11 specific)",
-      "icd11": "Chapter 17: Conditions Related to Sexual Health",
-      "explanation": "ICD-11 moved gender incongruence and paraphilic disorders from mental disorders to a new Chapter 17 on Sexual Health, reducing stigma while maintaining access to care.",
-      "reference": "ICD-11 Chapter 17; DSM-5-TR p. 511"
+      "vignette": {
+        "chiefComplaint": "I need it every day now. I've tried to quit but I shake all over.",
+        "history": "45-year-old male drinking 1L vodka daily for 5 years. Multiple failed quit attempts. Lost job due to drinking.",
+        "mentalStatus": "Mild tremor. Elevated GGT. Reports tolerance and withdrawal. Continues despite health/social consequences.",
+        "duration": "Pattern escalating over 5 years with physical dependence developed."
+      },
+      "options": [
+        "Alcohol Abuse",
+        "Alcohol Dependence",
+        "Alcohol Use Disorder, Severe",
+        "Alcohol Intoxication"
+      ],
+      "answer": "Alcohol Use Disorder, Severe",
+      "dsmCode": "303.90",
+      "icdCode": "6C40.2",
+      "explanation": "AUD Severe requires ≥6 of 11 criteria: impaired control, social impairment, risky use, pharmacological criteria (tolerance/withdrawal).",
+      "clinicalPearl": "DSM-5 severity: Mild (2-3), Moderate (4-5), Severe (6+). ICD-11: 6C40.0 (single episode), 6C40.1 (harmful pattern), 6C40.2 (dependence)."
+    },
+    {
+      "id": "q025",
+      "type": "standard",
+      "category": "Sleep-Wake Disorders",
+      "difficulty": "hard",
+      "prompt": "What is the DSM-5-TR code for Narcolepsy?",
+      "answer": "347",
+      "icdCode": "7A24",
+      "explanation": "Narcolepsy is 347 in DSM-5-TR and 7A24 in ICD-11. Requires recurrent sleep attacks ≥3/month for ≥3 months with cataplexy and/or low CSF hypocretin-1.",
+      "clinicalPearl": "Type 1: with cataplexy OR low hypocretin. Type 2: without cataplexy, normal hypocretin. Tetrad: Excessive daytime sleepiness, Cataplexy, Sleep paralysis, Hypnagogic hallucinations."
     }
   ]
 }
